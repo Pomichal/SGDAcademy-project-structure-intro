@@ -83,5 +83,7 @@ public class ClearPersistentStorage : EditorWindow
     private void AddDummyData()
     {
         // TODO: setup dummy data
+        PlayerPrefs.SetInt("score", 10);
+        PlayerPrefs.Save();
     }
 }

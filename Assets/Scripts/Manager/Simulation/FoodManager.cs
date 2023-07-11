@@ -1,30 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class FoodManager : MonoBehaviour
 {
 
     [SerializeField]
-    private GameObject foodPrefab;
+    private FoodManagerData data;
 
-    [SerializeField]
-    private int startingFoodCount = 5;
-
-
-    [SerializeField]
-    private float spawnInterval = 2.0f;
     private float timer = 0f;
 
 
     // Start is called before the first frame update
     private void Start()
     {
-        for(int i = 0; i < startingFoodCount; i++)
+        // load food data
+        List<FoodManagerData> possibilities = Resources.LoadAll<FoodManagerData>("Data/FoodManagerSO").ToList();
+
+        data = possibilities[Random.Range(0, possibilities.Count())];
+        for(int i = 0; i < data.startingFoodCount; i++)
         {
-            Instantiate(foodPrefab, GetRandomPosition(), Quaternion.identity);
+            Instantiate(data.foodPrefab, GetRandomPosition(), Quaternion.identity);
         }
-        timer = spawnInterval;
+        timer = data.spawnInterval;
     }
 
     // Update is called once per frame
@@ -33,8 +32,8 @@ public class FoodManager : MonoBehaviour
         timer -= Time.deltaTime;
         if(timer <= 0)
         {
-            Instantiate(foodPrefab, GetRandomPosition(), Quaternion.identity);
-            timer = spawnInterval;
+            Instantiate(data.foodPrefab, GetRandomPosition(), Quaternion.identity);
+            timer = data.spawnInterval;
         }
     }
 
